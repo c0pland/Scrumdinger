@@ -1,36 +1,23 @@
-//
-//  DailyScrum.swift
-//  Scrumdinger
-//
-//  Created by Богдан Беннер on 10.10.22.
-//
+/*
+ See LICENSE folder for this sample’s licensing information.
+ */
 
 import Foundation
 
 struct DailyScrum: Identifiable {
-	var id: UUID = UUID()
+	let id: UUID
 	var title: String
+	var attendees: [Attendee]
 	var lengthInMinutes: Int
 	var theme: Theme
-	var attendees: [Attendee]
 	
 	init(id: UUID = UUID(), title: String, attendees: [String], lengthInMinutes: Int, theme: Theme) {
 		self.id = id
 		self.title = title
-		self.attendees = attendees.map{ Attendee(name: $0) }
+		self.attendees = attendees.map { Attendee(name: $0) }
 		self.lengthInMinutes = lengthInMinutes
 		self.theme = theme
 	}
-}
-
-
-extension DailyScrum {
-	static let sampleData: [DailyScrum] =
-	[
-		DailyScrum(title: "Design", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], lengthInMinutes: 10, theme: .seafoam),
-		DailyScrum(title: "App Dev", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], lengthInMinutes: 5, theme: .orange),
-		DailyScrum(title: "Web Dev", attendees: ["Chella", "Chris", "Christina", "Eden", "Karla", "Lindsey", "Aga", "Chad", "Jenn", "Sarah"], lengthInMinutes: 5, theme: .poppy)
-	]
 }
 
 extension DailyScrum {
@@ -53,7 +40,6 @@ extension DailyScrum {
 	
 	var data: Data {
 		Data(title: title, attendees: attendees, lengthInMinutes: Double(lengthInMinutes), theme: theme)
-		
 	}
 	
 	mutating func update(from data: Data) {
@@ -62,4 +48,21 @@ extension DailyScrum {
 		lengthInMinutes = Int(data.lengthInMinutes)
 		theme = data.theme
 	}
+	
+	init(data: Data) {
+		id = UUID()
+		title = data.title
+		attendees = data.attendees
+		lengthInMinutes = Int(data.lengthInMinutes)
+		theme = data.theme
+	}
+}
+
+extension DailyScrum {
+	static let sampleData: [DailyScrum] =
+	[
+		DailyScrum(title: "Design", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], lengthInMinutes: 10, theme: .yellow),
+		DailyScrum(title: "App Dev", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], lengthInMinutes: 5, theme: .orange),
+		DailyScrum(title: "Web Dev", attendees: ["Chella", "Chris", "Christina", "Eden", "Karla", "Lindsey", "Aga", "Chad", "Jenn", "Sarah"], lengthInMinutes: 5, theme: .poppy)
+	]
 }
